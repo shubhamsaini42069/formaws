@@ -20,7 +20,7 @@ def view():
     return jsonify(submitted_data)
 @app.route('/')
 def index():
-    return "Shubham Assignment 5 Backend is running!"
+    return "AWS Flask App is running!"
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000, host='0.0.0.0')
