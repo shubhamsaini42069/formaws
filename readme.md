@@ -1,4 +1,4 @@
-# Simple Fullstack Form App with Express, Flask, and Docker
+# Simple Fullstack Form App with Express, Flask, and Docker SUpports AWS Ec2 Deployment and ECS ECR
 
 This is a fullstack web application using an Express.js frontend and a Flask backend. The frontend provides a form where users can submit their name and email. The backend receives the data and displays all submissions through a `/view` endpoint.
 
