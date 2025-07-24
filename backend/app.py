@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify,requests
 from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
@@ -21,6 +21,11 @@ def view():
 @app.route('/')
 def index():
     return "AWS Flask App is running!"
+@app.route('/get-ip')
+def get_ip():
+    ip = requests.get("http://169.254.169.254/latest/meta-data/public-ipv4").text
+    return jsonify({"ip": ip})
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000, host='0.0.0.0')

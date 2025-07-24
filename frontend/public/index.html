@@ -72,24 +72,34 @@
   <p id="response"></p>
 
   <script>
-    document.getElementById('infoForm').addEventListener('submit', async function (e) {
-      e.preventDefault(); // prevent the form from reloading the page
+  // First fetch EC2 public IP dynamically from backend
+  async function getApiURL() {
+    const res = await fetch('/get-ip');
+    const data = await res.json();
+    return `http://${data.ip}:5000/submit`;
+  }
 
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
+  document.getElementById('infoForm').addEventListener('submit', async function (e) {
+    e.preventDefault(); // prevent the form from reloading the page
 
-      const response = await fetch('http://localhost:5000/submit', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({ name, email })
-});
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
 
-
-      const result = await response.json();
-      document.getElementById('response').innerText = result.message;
+    const apiUrl = await getApiURL(); // dynamically get the backend IP
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name, email })
     });
-  </script>
+
+    const result = await response.json();
+    document.getElementById('response').innerText = result.message;
+  });
+</script>
+
+
+
 </body>
 </html>
