@@ -71,21 +71,20 @@
 
   <p id="response"></p>
 
-  <script>
-  // First fetch EC2 public IP dynamically from backend
+ <script>
   async function getApiURL() {
-    const res = await fetch('/get-ip');
+    const res = await fetch('http://localhost:5000/get-ip'); // Call to Flask backend
     const data = await res.json();
-    return `http://${data.ip}:5000/submit`;
+    return `http://${data.ip}:5000/submit`;  // ✅ EXACT format you asked
   }
 
   document.getElementById('infoForm').addEventListener('submit', async function (e) {
-    e.preventDefault(); // prevent the form from reloading the page
+    e.preventDefault();
 
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
 
-    const apiUrl = await getApiURL(); // dynamically get the backend IP
+    const apiUrl = await getApiURL();  // Uses public IP
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
@@ -98,6 +97,7 @@
     document.getElementById('response').innerText = result.message;
   });
 </script>
+
 
 
 

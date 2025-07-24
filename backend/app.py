@@ -23,8 +23,19 @@ def index():
     return "AWS Flask App is running!"
 @app.route('/get-ip')
 def get_ip():
-    ip = requests.get("http://169.254.169.254/latest/meta-data/public-ipv4").text
+    # Secure fetch of public IPv4 with token
+    token = requests.put(
+        "http://169.254.169.254/latest/api/token",
+        headers={"X-aws-ec2-metadata-token-ttl-seconds": "21600"}
+    ).text
+
+    ip = requests.get(
+        "http://169.254.169.254/latest/meta-data/public-ipv4",
+        headers={"X-aws-ec2-metadata-token": token}
+    ).text
+
     return jsonify({"ip": ip})
+
 
 
 if __name__ == '__main__':
