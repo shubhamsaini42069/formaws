@@ -71,35 +71,33 @@
 
   <p id="response"></p>
 
- <script>
-  async function getApiURL() {
-    const res = await fetch('http://localhost:5000/get-ip'); // Call to Flask backend
-    const data = await res.json();
-    return `http://${data.ip}:5000/submit`;  // ✅ EXACT format you asked
-  }
+  <script>
+    async function getApiURL() {
+      // This MUST point to the backend Flask port 5000
+      const res = await fetch('http://localhost:5000/get-ip');
+      const data = await res.json();
+      return `http://${data.ip}:5000/submit`;
+    }
 
-  document.getElementById('infoForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
+    document.getElementById('infoForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
 
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
 
-    const apiUrl = await getApiURL();  // Uses public IP
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ name, email })
+      const apiUrl = await getApiURL();
+
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, email })
+      });
+
+      const result = await response.json();
+      document.getElementById('response').innerText = result.message;
     });
-
-    const result = await response.json();
-    document.getElementById('response').innerText = result.message;
-  });
-</script>
-
-
-
-
+  </script>
 </body>
 </html>
